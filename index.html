@@ -100,12 +100,18 @@
                             </div>
                             <div class="form-group">
                                 <label class="sr-only" for="form-first-name">Switch Address</label>
-                                <input type="text" name="form-first-name" placeholder="Switch Address ..." class="form-first-name form-control" id="sa">
+                                <input type="text" name="form-first-name" placeholder="Switch Address ..." class="form-first-name form-control" id="swad">
                             </div>
+
+                            <datalist id=swad_list></datalist>
+
                             <div class="form-group">
                                 <label class="sr-only" for="form-last-name">Rule Name</label>
                                 <input type="text" name="form-last-name" placeholder="Firewall Name ..." class="form-last-name form-control" id="rn">
                             </div>
+
+                            <datalist id=fn_list></datalist>
+
                             <div class="form-group">
                                 <label class="sr-only">Decision</label>
 
@@ -153,63 +159,76 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-5 text">
-
+                    <div class="col-sm-5 form-box">
                         <div class="form-top">
-                            <p>Firewall Rules:</p>
+                            <div class="form-top-left">
+                                <h3>Firewall Details</h3>
+                                <p>The form below indicates detailed info:</p>
+                            </div>
+                            <div class="form-top-right">
+                                <i class="fa fa-pencil"></i>
+                            </div>
+                            <div class="form-top-divider"></div>
                         </div>
+                        <div id="active_rules" class="form-bottom">
+                            <button id="lfw" class="btn">Load Firewall!</button>
+
+                            <div class="form">
+                                <p>Firewall Rules:</p>
+                            </div>
 
 
-                        <div class="form-group">
-                            <input type="text" name="src_mac" placeholder="src_mac..." class="form-email form-control" id="src_mac">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="dst_mac" placeholder="dst_mac..." class="form-email form-control" id="dst_mac">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="src_ip" placeholder="src_ip..." class="form-email form-control" id="src_ip">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="dst_ip" placeholder="dst_ip..." class="form-email form-control" id="dst_ip">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="src_port" placeholder="src_port..." class="form-email form-control" id="src_port">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="dst_port" placeholder="dst_port..." class="form-email form-control" id="dst_port">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" list="protocols" name="protocol" placeholder="protocol..." class="form-email form-control" id="protocol">
-                            <datalist>
+                            <div class="form-group">
+                                <input type="text" name="src_mac" placeholder="src_mac..." class="form-email form-control" id="src_mac">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="dst_mac" placeholder="dst_mac..." class="form-email form-control" id="dst_mac">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="src_ip" placeholder="src_ip..." class="form-email form-control" id="src_ip">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="dst_ip" placeholder="dst_ip..." class="form-email form-control" id="dst_ip">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="src_port" placeholder="src_port..." class="form-email form-control" id="src_port">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="dst_port" placeholder="dst_port..." class="form-email form-control" id="dst_port">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" list="protocols" name="protocol" placeholder="protocol..." class="form-email form-control" id="protocol">
+                                <datalist>
                                 <option value="TCP">
                                 <option value="UDP">
                             </datalist>
-                        </div>
+                            </div>
 
-                        <div class="form-top">
-                            <p>Firewall Paras:</p>
-                        </div>
+                            <div class="form">
+                                <p>Firewall Paras:</p>
+                            </div>
 
 
-                        <div class="form-group">
-                            <input type="text" name="dst_port" placeholder="Priority..." class="form-email form-control" id="priority">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="dst_port" placeholder="Idle Timeout..." class="form-email form-control" id="idle_timeout">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="dst_port" placeholder="Hard Timeout..." class="form-email form-control" id="hard_timeout">
-                        </div>
+                            <div class="form-group">
+                                <input type="text" name="dst_port" placeholder="Priority..." class="form-email form-control" id="priority">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="dst_port" placeholder="Idle Timeout..." class="form-email form-control" id="idle_timeout">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="dst_port" placeholder="Hard Timeout..." class="form-email form-control" id="hard_timeout">
+                            </div>
 
-                        <button id="cfw" class="btn">Add Firewall!</button>
-                        <div class="description">
-                            <p>
-                                Click 'Add rule!' or 'Add para!' to add a specific firewall rule/parameter!
-                            </p>
-                        </div>
+                            <button id="cfw" class="btn">Add Firewall!</button>
+                            <div class="description">
+                                <p>
+                                    Click 'Add rule!' or 'Add para!' to add a specific firewall rule/parameter!
+                                </p>
+                            </div>
 
+
+                        </div>
                     </div>
-
                 </div>
             </div>
         </div>

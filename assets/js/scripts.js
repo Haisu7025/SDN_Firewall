@@ -46,6 +46,10 @@ jQuery(document).ready(function() {
 
 });
 
+var load_array = null;
+var ssw = null;
+var flow = null;
+
 $(function() {
     $('#b1').click(function() {
         rule_type_sel = $('#rule_type_sel').val();
@@ -97,7 +101,13 @@ $(function() {
 
     $("#cfw").click(function() {
         var cia = $("#cia").val();
-        var sa = $("#sa").val();
+
+        if (cia == "") {
+            alert("Please enter valid controller IP address!")
+            return;
+        }
+
+        var sa = $("#swad").val();
         var rn = $("#rn").val();
         var d = $("#d").val();
         var src_mac = $("#src_mac").val();
@@ -107,14 +117,14 @@ $(function() {
         var src_port = $("#src_port").val();
         var dst_port = $("#dst_port").val();
         var protocol = $("#protocol").val();
-        var p = $("#p").val();
-        var ito = $("#ito").val();
-        var hto = $("#hto").val();
+        var p = $("#priority").val();
+        var ito = $("#idle_timeout").val();
+        var hto = $("#hard_timeout").val();
 
-        alert(sa);
         $.post('curl.php', {
+                "action": "ADD",
                 "cia": cia,
-                "sa ": sa,
+                "sa": sa,
                 "rn": rn,
                 "d": d,
                 "src_mac": src_mac,
@@ -156,5 +166,96 @@ $(function() {
         $('#priority').hide();
         $('#idle_timeout').hide();
         $('#hard_timeout').hide();
+    });
+
+    $("#lfw").click(function() {
+        var cia = $("#cia").val();
+
+        if (cia == "") {
+            alert("Please enter valid controller IP address!")
+            return;
+        }
+
+        var sa = $("#swad").val();
+        var rn = $("#rn").val();
+
+        $.post('curl.php', {
+                "action": "LOAD",
+                "cia": cia,
+                "sa": sa,
+                "rn": rn
+            },
+            function(data) {
+                var pos = data.indexOf('{');
+                var json_response = data.substr(pos, 10000);
+                alert(json_response);
+                var json_obj = JSON.parse(json_response);
+                var json_array = Object.entries(json_obj);
+                load_array = json_array;
+                if (json_array.length > 0) {
+                    for (var i = 0; i < json_array.length; i++) {
+                        var j = json_array[i];
+                        var swad = j[0];
+                        $("#swad_list").append('<option id="switch' + i + '" value="' + swad + '">');
+                        $("#swad").click(function() {
+                            var target = $("#swad").val();
+                            for (var i = 0; i < json_array.length; i++) {
+                                if (load_array[i][0] == target) {
+                                    ssw = load_array[i];
+                                    break;
+                                }
+                            }
+                            if (ssw != null) {
+                                $("#fn_list").empty();
+                                for (var p = 0; p < ssw[1].length; p++) {
+                                    var fltb = Object.entries(ssw[1][p]);
+                                    var fltb_name = fltb[0][0];
+                                    $("#fn_list").append('<option value="' + fltb_name + '">');
+                                    var fltb_ct = fltb[0][1];
+                                }
+
+
+                                $("#rn").click(function() {
+                                    var target = $("#rn").val();
+                                    for (var i = 0; i < ssw[1].length; i++) {
+                                        var fltb = Object.entries(ssw[1][i]);
+                                        var fltb_name = fltb[0][0];
+                                        if (fltb_name == target) {
+                                            flow = fltb;
+                                            break;
+                                        }
+                                    }
+
+                                    //parse flow
+                                    if (flow.length == 0) {
+                                        return;
+                                    }
+                                    flow_info = flow[0][1];
+                                    match = flow_info['match'];
+                                    action = flow_info['instructions']['instruction_apply_actions']['actions'];
+                                    if (action != null) {
+                                        $("#d").val("Accept");
+                                    } else {
+                                        $("#d").val("Deny");
+                                    }
+                                    if (match['in_port'] != null) {
+                                        $("#dst_port").show();
+                                        $("#dst_port").val('Dst Port:' + match['in_port']);
+                                    }
+                                });
+
+
+
+
+                            }
+                        });
+                    }
+
+                }
+                $("#swad").attr('list', 'swad_list');
+                $("#rn").attr('list', 'fn_list');
+
+            });
+
     });
 });
