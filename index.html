@@ -80,6 +80,16 @@
                 <h1>
                     <font color="white">Software defined firewall!</font>
                 </h1>
+
+
+
+                <div class="btn-group btn-group-xs">
+                    <label class="" for="form-first-name">Controller IP Address</label>
+                    <div class="form-top">
+                        <input autocomplete="on" type="text" name="form-first-name" placeholder="Controller IP Address ..." class="form-first-name form-control" id="cia">
+                    </div>
+                    <button id="ipc" class="btn btn-sm">Confirm</button>
+                </div>
                 <div class="row">
 
                     <div class="col-sm-5 form-box">
@@ -94,10 +104,7 @@
                             <div class="form-top-divider"></div>
                         </div>
                         <div id="active_rules" class="form-bottom">
-                            <div class="form-group">
-                                <label class="sr-only" for="form-first-name">Controller Address</label>
-                                <input autocomplete="on" type="text" name="form-first-name" placeholder="Controller IP Address ..." class="form-first-name form-control" id="cia">
-                            </div>
+
                             <div class="form-group">
                                 <label class="sr-only" for="form-first-name">Switch Address</label>
                                 <input type="text" name="form-first-name" placeholder="Switch Address ..." class="form-first-name form-control" id="swad">
@@ -238,6 +245,7 @@
 
     <!-- Javascript -->
     <script src="assets/js/jquery-1.11.1.min.js"></script>
+    <script src="assets/js/jquery.cookie.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/jquery.backstretch.min.js"></script>
     <script src="assets/js/retina-1.1.0.min.js"></script>

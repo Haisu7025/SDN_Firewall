@@ -43,14 +43,37 @@ jQuery(document).ready(function() {
     $('#idle_timeout').hide();
     $('#hard_timeout').hide();
 
-
+    if ($.cookie('cip') != null) {
+        $("#cia").val($.cookie('cip'));
+        $("#cia").attr('disabled', "disabled");
+        $("#ipc").text("Change IP");
+    }
 });
 
 var load_array = null;
 var ssw = null;
 var flow = null;
+var cip;
 
 $(function() {
+    $("#ipc").click(function() {
+        var cia = $("#cia").val();
+        cip = cia;
+        if (cia == "") {
+            alert("Please enter valid controller IP address!")
+            return;
+        }
+        $.cookie('cip', cia);
+        if ($("#ipc").text() == "Confirm") {
+            $("#cia").attr('disabled', "disabled");
+            $("#ipc").text("Change IP");
+        } else {
+            $("#cia").removeAttr('disabled');
+            $("#cia").val("");
+            $("#ipc").text("Confirm");
+        }
+    });
+
     $('#b1').click(function() {
         rule_type_sel = $('#rule_type_sel').val();
         switch (rule_type_sel) {
@@ -121,6 +144,56 @@ $(function() {
         var ito = $("#idle_timeout").val();
         var hto = $("#hard_timeout").val();
 
+        if (src_mac.indexOf('-') > 0) {
+            var pos = src_mac.indexOf('-');
+            src_mac = src_mac.substr(pos + 1, 100);
+        }
+
+        if (dst_mac.indexOf('-') > 0) {
+            var pos = dst_mac.indexOf('-');
+            dst_mac = dst_mac.substr(pos + 1, 100);
+        }
+
+        if (src_ip.indexOf('-') > 0) {
+            var pos = src_ip.indexOf('-');
+            src_ip = src_ip.substr(pos + 1, 100);
+        }
+
+        if (dst_ip.indexOf('-') > 0) {
+            var pos = dst_ip.indexOf('-');
+            dst_ip = dst_ip.substr(pos + 1, 100);
+        }
+
+        if (src_port.indexOf('-') > 0) {
+            var pos = src_port.indexOf('-');
+            src_port = src_port.substr(pos + 1, 100);
+        }
+
+        if (dst_port.indexOf('-') > 0) {
+            var pos = dst_port.indexOf('-');
+            dst_port = dst_port.substr(pos + 1, 100);
+        }
+
+        if (protocol.indexOf('-') > 0) {
+            var pos = protocol.indexOf('-');
+            protocol = protocol.substr(pos + 1, 100);
+        }
+
+        if (p.indexOf('-') > 0) {
+            var pos = p.indexOf('-');
+            p = p.substr(pos + 1, 100);
+        }
+
+        if (ito.indexOf('-') > 0) {
+            var pos = ito.indexOf('-');
+            ito = ito.substr(pos + 1, 100);
+        }
+
+        if (hto.indexOf('-') > 0) {
+            var pos = hto.indexOf('-');
+            hto = hto.substr(pos + 1, 100);
+        }
+
         $.post('curl.php', {
                 "action": "ADD",
                 "cia": cia,
@@ -141,7 +214,7 @@ $(function() {
             function(data) {
                 alert(data);
             });
-
+        window.location.reload();
     });
 
     $("#b3").click(function() {
@@ -175,7 +248,6 @@ $(function() {
             alert("Please enter valid controller IP address!")
             return;
         }
-
         var sa = $("#swad").val();
         var rn = $("#rn").val();
 
@@ -227,21 +299,74 @@ $(function() {
                                     }
 
                                     //parse flow
+                                    if (flow == null) {
+                                        return;
+                                    }
                                     if (flow.length == 0) {
                                         return;
                                     }
                                     flow_info = flow[0][1];
                                     match = flow_info['match'];
-                                    action = flow_info['instructions']['instruction_apply_actions']['actions'];
-                                    if (action != null) {
-                                        $("#d").val("Accept");
-                                    } else {
+                                    if (flow_info['instructions']['instruction_apply_actions'] == null) {
                                         $("#d").val("Deny");
+                                    } else {
+                                        action = flow_info['instructions']['instruction_apply_actions']['actions'];
+                                        $("#d").val(action);
                                     }
+
+                                    if (match['eth_src'] != null) {
+                                        $("#src_mac").show();
+                                        $("#src_mac").val('Src MAC-' + match['eth_src']);
+                                    }
+
+                                    if (match['eth_src'] != null) {
+                                        $("#src_mac").show();
+                                        $("#src_mac").val('Src MAC-' + match['eth_src']);
+                                    }
+
+                                    if (match['eth_dst'] != null) {
+                                        $("#dst_mac").show();
+                                        $("#dst_mac").val('Dst MAC-' + match['eth_dst']);
+                                    }
+
+                                    if (match['ipv4_src'] != null) {
+                                        $("#src_ip").show();
+                                        $("#src_ip").val('Src IP-' + match['ipv4_src']);
+                                    }
+
+                                    if (match['ipv4_dst'] != null) {
+                                        $("#dst_ip").show();
+                                        $("#dst_ip").val('Dst IP-' + match['ipv4_dst']);
+                                    }
+
+
                                     if (match['in_port'] != null) {
                                         $("#dst_port").show();
-                                        $("#dst_port").val('Dst Port:' + match['in_port']);
+                                        $("#dst_port").val('Dst Port-' + match['in_port']);
                                     }
+
+                                    if (match['ip_proto'] != null) {
+                                        $("#protocol").show();
+                                        $("#protocol").val('Protocol-' + match['ip_proto']);
+                                    }
+
+                                    if (match['priority'] != null) {
+                                        $("#priority").show();
+                                        $("#priority").val('Priority-' + match['priority']);
+                                    }
+
+                                    if (match['ip_proto'] != null) {
+                                        $("#idle_timeout").show();
+                                        $("#idle_timeout").val('Idle Timeout-' + match['idle_timeout']);
+                                    }
+
+                                    if (match['hard_timeout'] != null) {
+                                        $("#hard_timeout").show();
+                                        $("#hard_timeout").val('Hard Timeout-' + match['hard_timeout']);
+                                    }
+
+                                    $("#cfw").text("Modify Firewall！");
+
                                 });
 
 
