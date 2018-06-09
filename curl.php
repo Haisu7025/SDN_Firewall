@@ -27,6 +27,8 @@ if ($_POST['action'] == 'ADD') {
     $valid_rule = 0x00;
     $valid_para = 0x00;
 
+    $data['eth_type'] = 0x0800;
+
     if (strlen($_POST['src_mac']) > 0) {
         $data['eth_src'] = $_POST['src_mac'];
         $valid_rule += 1;

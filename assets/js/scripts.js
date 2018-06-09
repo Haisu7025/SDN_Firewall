@@ -242,8 +242,11 @@ $(function() {
     });
 
     $("#lfw").click(function() {
+        if ($("#lfw").text() == "Loaded!") {
+            return;
+        }
         var cia = $("#cia").val();
-
+        $("#lfw").text("Loaded!")
         if (cia == "") {
             alert("Please enter valid controller IP address!")
             return;
@@ -269,7 +272,7 @@ $(function() {
                         var j = json_array[i];
                         var swad = j[0];
                         $("#swad_list").append('<option id="switch' + i + '" value="' + swad + '">');
-                        $("#swad").click(function() {
+                        $("#rn").click(function() {
                             var target = $("#swad").val();
                             for (var i = 0; i < json_array.length; i++) {
                                 if (load_array[i][0] == target) {
@@ -287,7 +290,7 @@ $(function() {
                                 }
 
 
-                                $("#rn").click(function() {
+                                $("#rn").blur(function() {
                                     var target = $("#rn").val();
                                     for (var i = 0; i < ssw[1].length; i++) {
                                         var fltb = Object.entries(ssw[1][i]);
@@ -350,19 +353,19 @@ $(function() {
                                         $("#protocol").val('Protocol-' + match['ip_proto']);
                                     }
 
-                                    if (match['priority'] != null) {
+                                    if (flow_info['priority'] != null) {
                                         $("#priority").show();
-                                        $("#priority").val('Priority-' + match['priority']);
+                                        $("#priority").val('Priority-' + flow_info['priority']);
                                     }
 
-                                    if (match['ip_proto'] != null) {
+                                    if (flow_info['idleTimeoutSec'] != null) {
                                         $("#idle_timeout").show();
-                                        $("#idle_timeout").val('Idle Timeout-' + match['idle_timeout']);
+                                        $("#idle_timeout").val('Idle Timeout-' + flow_info['idleTimeoutSec']);
                                     }
 
-                                    if (match['hard_timeout'] != null) {
+                                    if (flow_info['hardTimeoutSec'] != null) {
                                         $("#hard_timeout").show();
-                                        $("#hard_timeout").val('Hard Timeout-' + match['hard_timeout']);
+                                        $("#hard_timeout").val('Hard Timeout-' + flow_info['hardTimeoutSec']);
                                     }
 
                                     $("#cfw").text("Modify Firewall！");
