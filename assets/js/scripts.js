@@ -43,6 +43,8 @@ jQuery(document).ready(function() {
     $('#idle_timeout').hide();
     $('#hard_timeout').hide();
 
+    $("#dfw").hide();
+
     if ($.cookie('cip') != null) {
         $("#cia").val($.cookie('cip'));
         $("#cia").attr('disabled', "disabled");
@@ -241,10 +243,11 @@ $(function() {
         $('#hard_timeout').hide();
     });
 
+    $("#dfw").click(function() {
+
+    });
+
     $("#lfw").click(function() {
-        if ($("#lfw").text() == "Loaded!") {
-            return;
-        }
         var cia = $("#cia").val();
         $("#lfw").text("Loaded!")
         if (cia == "") {
@@ -268,6 +271,9 @@ $(function() {
                 var json_array = Object.entries(json_obj);
                 load_array = json_array;
                 if (json_array.length > 0) {
+                    if ($("#lfw").text() == "Loaded!") {
+                        return;
+                    }
                     for (var i = 0; i < json_array.length; i++) {
                         var j = json_array[i];
                         var swad = j[0];
@@ -369,7 +375,7 @@ $(function() {
                                     }
 
                                     $("#cfw").text("Modify Firewall！");
-
+                                    $("#dfw").show();
                                 });
 
 
