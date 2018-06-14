@@ -244,10 +244,31 @@ $(function() {
     });
 
     $("#dfw").click(function() {
+        var cia = $("#cia").val();
 
+        if (cia == "") {
+            alert("Please enter valid controller IP address!")
+            return;
+        }
+
+        var sa = $("#swad").val();
+        var rn = $("#rn").val();
+
+        $.post('curl.php', {
+                "action": "DEL",
+                "cia": cia,
+                "sa": sa,
+                "rn": rn
+            },
+            function(data) {
+                alert(data);
+            })
     });
 
     $("#lfw").click(function() {
+        // if ($("#lfw").text() == "Loaded!") {
+        //     return;
+        // }
         var cia = $("#cia").val();
         $("#lfw").text("Loaded!")
         if (cia == "") {
@@ -271,9 +292,9 @@ $(function() {
                 var json_array = Object.entries(json_obj);
                 load_array = json_array;
                 if (json_array.length > 0) {
-                    if ($("#lfw").text() == "Loaded!") {
-                        return;
-                    }
+                    // if ($("#lfw").text() == "Loaded!") {
+                    //     return;
+                    // }
                     for (var i = 0; i < json_array.length; i++) {
                         var j = json_array[i];
                         var swad = j[0];

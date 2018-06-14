@@ -84,13 +84,17 @@ if ($_POST['action'] == 'LOAD') {
 
 }
 
-if ($_POST['action'] == 'DELETE') {
+if ($_POST['action'] == 'DEL') {
     echo "DELETE!!";
     $url = 'http://' . $controller_ip . ':8080/wm/staticentrypusher/json';
-
+    $data = array();
     $data['name'] = $_POST['rn'];
+    $data = json_encode($data);
     curl_setopt($handle, CURLOPT_CUSTOMREQUEST, 'DELETE');
     curl_setopt($handle, CURLOPT_POSTFIELDS, $data); //设置请求体，提交数据包
+
+    echo $data;
+
 }
 
 if ($_POST['action'] == 'LISTALL') {
